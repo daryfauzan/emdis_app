@@ -28,27 +28,27 @@
         <hr>
     </div>
     <div class="container mt-3">
-        <form method="GET">
+        <form onsubmit="validate(); change_page(); return false;" method="GET" action="">
             <div class="form-group">
                 <label>Nomor Telepon</label>
-                <input type="text" class="form-control" required>
+                <input pattern="(08)([0-9]{8,10})" id='no-telp' type="tel" class="form-control" required>
                 <small>Contoh: 08123456789</small>
             </div>
             <div class="form-group">
-                <label for="exampleFormControlTextarea1">Message</label>
-                <textarea class="form-control" rows="7" required></textarea>
+                <label>Message</label>
+                <textarea class="form-control" id='msg' rows="7" required></textarea>
             </div>
             <div class="form-group">
                 <label>Current Latitude: <br></label>
-                <input id='latitude' type="text" disabled class="form-control mb-3" required>
+                <input type="text" id='lat' disabled class="form-control mb-3" required>
             </div>
             <div class="form-group">
                 <label>Current Longitude: <br></label>
-                <input id='longitude' type="text" disabled class="form-control mb-3" required>
+                <input type="text" id='long' disabled class="form-control mb-3" required>
             </div>
             <hr>
             <a class="btn btn-secondary text-white btn-block" onclick="refreshPosition()">Get Location</a>
-            <button class="btn btn-primary text-white btn-block mt-3" type='submit' onclick="test()">Send</button>
+            <button class="btn btn-primary text-white btn-block mt-3" value="Submit" type='submit'>Send</button>
         </form>
             
         <footer class="text-center mb-2" style="margin-top: 50px;">
@@ -58,8 +58,9 @@
 
 
     <script>
-        var lat = document.getElementById("latitude");
-        var long = document.getElementById("longitude");
+        var lat = document.getElementById("lat");
+        var long = document.getElementById("long");
+        var validated = false;
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
@@ -67,6 +68,24 @@
         } else {
             x.innerHTML = "Geolocation is not supported by this browser.";
         }
+
+        function validate(){
+            validated = true
+            return false;
+        }
+        function change_page(){
+            if(validated){
+                var no_telp = document.getElementById('no-telp').value;
+                var msg = document.getElementById('msg').value;
+
+                console.log([no_telp, msg, lat.value, long.value])
+                path = 'http://localhost:5000/post-call' + '?latitude='+lat.value+'&longitude='+long.value + '&phone_num=' + no_telp +'&message=' + msg;
+                window.location.href = path;
+                return false;
+            }
+        }
+
+        
 
         function refreshPosition(){
             if (navigator.geolocation) {
@@ -76,10 +95,7 @@
             }   
         }
 
-        function test(){
-            console.log('test')
-        }
-
+        
         function showPosition(position) {
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;  
