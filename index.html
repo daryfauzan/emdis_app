@@ -36,32 +36,44 @@
                 <label for="exampleFormControlTextarea1">Message</label>
                 <textarea class="form-control" rows="7"></textarea>
             </div>
-            <!-- <input type="text" disabled class="form-control mb-3" id='demo'> -->
-            <!-- <p id='demo'></p> -->
-            <!-- <a class="btn btn-primary text-white" onclick="getLocation()">Get Location</a> -->
+            <div class="form-group">
+                <label>Current Latitude: <br></label>
+                <input id='latitude' type="text" disabled class="form-control mb-3" id='demo'>
+            </div>
+            <div class="form-group">
+                <label>Current Longitude: <br></label>
+                <input id='longitude' type="text" disabled class="form-control mb-3" id='demo'>
+            </div>
+            <a class="btn btn-primary text-white btn-block" onclick="refreshPosition()">Get Location</a>
         </form>
     </div>
 
-    <p>Click the button to get your coordinates.</p>
-
-    <button onclick="getLocation()">Try It</button>
-
-    <p id="demo"></p>
 
     <script>
-        var x = document.getElementById("demo");
+        var lat = document.getElementById("latitude");
+        var long = document.getElementById("longitude");
 
-        function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+
+        function refreshPosition(){
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition);
             } else {
                 x.innerHTML = "Geolocation is not supported by this browser.";
-            }
+            }   
         }
 
         function showPosition(position) {
-            x.innerHTML = "Latitude: " + position.coords.latitude +
-                "<br>Longitude: " + position.coords.longitude;
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;  
+            console.log(position)
+            lat.setAttribute('value', latitude)
+            long.setAttribute('value', longitude)
+            // .setAttribute('value' ,"Latitude: " + position.coords.latitude + "Longitude: " + position.coords.longitude);
         }
     </script>
     <script src="static/vendor/jquery/jquery-3.3.1.min.js"></script>
