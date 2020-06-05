@@ -27,11 +27,12 @@
         </small>
         <hr>
     </div>
-    <div class="container mt-5">
-        <form method="POST">
+    <div class="container mt-3">
+        <form method="GET">
             <div class="form-group">
                 <label>Nomor Telepon</label>
                 <input type="text" class="form-control" required>
+                <small>Contoh: 08123456789</small>
             </div>
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Message</label>
@@ -39,19 +40,19 @@
             </div>
             <div class="form-group">
                 <label>Current Latitude: <br></label>
-                <input id='latitude' type="text" disabled class="form-control mb-3" id='demo' required>
+                <input id='latitude' type="text" disabled class="form-control mb-3" required>
             </div>
             <div class="form-group">
                 <label>Current Longitude: <br></label>
-                <input id='longitude' type="text" disabled class="form-control mb-3" id='demo' required>
+                <input id='longitude' type="text" disabled class="form-control mb-3" required>
             </div>
             <hr>
             <a class="btn btn-secondary text-white btn-block" onclick="refreshPosition()">Get Location</a>
-            <button class="btn btn-primary text-white btn-block mt-3">Send</button>
+            <button class="btn btn-primary text-white btn-block mt-3" type='button' onclick="test()">Send</button>
         </form>
-
+            
         <footer class="text-center mb-2" style="margin-top: 50px;">
-            <small>Developed By Kelomok SIG</small>
+            <small>Developed By Kelompok 1 SIG</small>
         </footer>
     </div>
 
@@ -62,16 +63,21 @@
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
+            
         } else {
             x.innerHTML = "Geolocation is not supported by this browser.";
         }
 
         function refreshPosition(){
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition);
+                window.location.reload(true) 
             } else {
                 x.innerHTML = "Geolocation is not supported by this browser.";
             }   
+        }
+
+        function test(){
+            console.log('test')
         }
 
         function showPosition(position) {
